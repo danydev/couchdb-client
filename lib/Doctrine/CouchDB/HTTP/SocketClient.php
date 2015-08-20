@@ -189,6 +189,9 @@ class SocketClient extends AbstractHTTPClient
      */
     public function request($method, $path, $data = null, $raw = false, array $headers = array())
     {
+        unset($headers['content-type']);
+        unset($headers['content-length']);
+
         // Try establishing the connection to the server
         $this->checkConnection();
 
@@ -202,6 +205,7 @@ class SocketClient extends AbstractHTTPClient
             $this->connection = null;
             return $this->request($method, $path, $data, $raw, $headers);
         }
+        error_log('$request ' . print_r($request,1));
 
         // Read server response headers
         $rawHeaders = '';
@@ -290,6 +294,8 @@ class SocketClient extends AbstractHTTPClient
             $this->connection = null;
         }
 
+        error_log('response $body ' . print_r($body,1));
+
         // Handle some response state as special cases
         switch ($headers['status']) {
             case 301:
@@ -304,6 +310,7 @@ class SocketClient extends AbstractHTTPClient
         if ($headers['status'] >= 400) {
             return new ErrorResponse($headers['status'], $headers, $body);
         }
+        error_log('response headers ' . print_r($headers,1));
         return new Response($headers['status'], $headers, $body, $raw);
     }
 }

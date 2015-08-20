@@ -341,7 +341,7 @@ class CouchDBClient
         $path = '/' . $this->databaseName;
         $response = $this->httpClient->request('POST', $path, json_encode($data));
 
-        if ($response->status != 201) {
+        if ($response->status != 201 && $response->status != 200) {
             throw HTTPException::fromResponse($path, $response);
         }
 
@@ -367,7 +367,7 @@ class CouchDBClient
         $path = '/' . $this->databaseName . '/' . urlencode($id);
         $response = $this->httpClient->request('PUT', $path, json_encode($data));
 
-        if ($response->status != 201) {
+        if ($response->status != 201 && $response->status != 202) {
             throw HTTPException::fromResponse($path, $response);
         }
 

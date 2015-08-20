@@ -322,7 +322,7 @@ class MultipartParserAndSender
         // Add Content-Length to the headers.
         $requestHeaders['Content-Length'] = strlen($str) + strlen($streamLine)
             + $totalAttachmentLength + $attachmentCount * (2 + $docBoundaryLength) + $docBoundaryLength + 2;
-
+        $requestHeaders['Content-Type'] = "application/json";
 
         if ($this->targetConnection == null) {
             $this->targetConnection = $this->targetClient->getConnection(
