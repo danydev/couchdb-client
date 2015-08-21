@@ -63,6 +63,8 @@ class Response
     {
         $this->status  = (int) $status;
         $this->headers = $headers;
+        // Remove chars that cause fail when json_decoded.
+        $body = str_replace(["\r", "\n"], '', $body);
         $this->body    = $raw ? $body : json_decode( $body, true );
     }
 }
